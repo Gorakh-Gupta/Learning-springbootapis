@@ -1,7 +1,7 @@
 package com.springboot.learning.topic;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,11 +9,20 @@ import java.util.List;
 @RestController
 public class TopicsController {
 
+    @Autowired
+    private TopicService topicService;
     @RequestMapping("/topics")
     public List<Topic> getAllTopics(){
-        return  Arrays.asList(
-                new Topic("Spring","Spring","good framework to create a atandalione api"),
-                new Topic("Python", "Python", "a good programming language")
-        );
+        return  topicService.getAllTopics();
+    }
+
+    @RequestMapping("/topic/{id}")
+    public Topic getTopic( @PathVariable String id){
+        return topicService.getTopic(id);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/topics")
+    public void addTopics(@RequestBody Topic topic){
+        topicService.addTopics(topic);
     }
 }
